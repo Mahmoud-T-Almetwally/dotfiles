@@ -43,4 +43,4 @@ log_info "Regenerating initramfs..."
 spinner "Regenerating initramfs..." sudo mkinitcpio -P
 log_success "Initramfs regenerated"
 
-log_success "NVIDIA configuration complete!"```
+log_success "NVIDIA configuration complete!"
