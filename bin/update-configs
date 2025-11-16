@@ -1,8 +1,8 @@
 #!/bin/bash
-source "$HOME/.local/share/dotfiles/bin/lib/helpers.sh"
-source "$HOME/.local/share/dotfiles/install/lib/backup.sh"
+source "$HOME/dotfiles/bin/lib/helpers.sh"
+source "$HOME/dotfiles/install/lib/backup.sh"
 
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
 REPO_CONFIG="$DOTFILES_DIR/config"
 USER_CONFIG="$HOME/.config"
 REPO_APPLICATIONS="$DOTFILES_DIR/applications"
