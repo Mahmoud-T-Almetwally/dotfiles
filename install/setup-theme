@@ -35,4 +35,4 @@ gsettings set org.gnome.desktop.interface icon-theme "Yaru-sage"
 gsettings set org.gnome.desktop.interface font-name 'CaskaydiaMono Nerd Font Mono 11'
 gsettings set org.gnome.desktop.interface monospace-font-name 'CaskaydiaMono Nerd Font Mono 11'
 
-log_success "Initial theme set (everforest)"
+log_success "Initial theme set (matte-black)"
