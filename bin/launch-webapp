@@ -5,7 +5,7 @@ if [[ -n "$WEBAPP_BROWSER" ]]; then
 else
   # List of browsers to try, in order of preference
   browsers=(
-    "helium-browser"
+    "zen-browser"
     "chromium"
     "brave-browser"
     "google-chrome"
