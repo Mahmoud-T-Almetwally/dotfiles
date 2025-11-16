@@ -5,7 +5,7 @@ selection_wrap = false                                                       # w
 global_argument_delimiter = "#"                                              # query: firefox#https://benz.dev => part after delimiter will be ignored when querying. this should be the same as in the elephant config
 exact_search_prefix = "'"                                                    # disable fuzzy searching
 theme = "dotfiles"                                                           # theme to use
-additional_theme_location = "~/.local/share/dotfiles/default/walker/themes/"
+additional_theme_location = "~/dotfiles/default/walker/themes/"
 disable_mouse = false                                                        # disable mouse (on input and list only)
 debug = false                                                                # enables debug printing for some stuff, f.e. keybinds
 page_jump_items = 10                                                         # number of items to skip with Page Up/Down
@@ -48,7 +48,6 @@ default = [
   "menus:starship_themes",
   "menus:system-themes",
   "menus:waybar-themes",
-  "menus:ollama",
   "menus:postgres",
   "menus:screenshots",
   "menus:transcode",
