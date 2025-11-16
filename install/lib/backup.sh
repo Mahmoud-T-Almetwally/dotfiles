@@ -1,7 +1,12 @@
 #!/bin/bash
 
+# Dynamically determine the root of the dotfiles repository
+# This script is in install/lib, so we go up two directories.
+DOTFILES_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
+
 BACKUP_ROOT="$HOME/dotfiles-backup"
-SESSION_FILE="$HOME/.local/share/dotfiles/.dotfiles-backup-session"
+# The session file is now correctly placed in the root of your dotfiles repo
+SESSION_FILE="$DOTFILES_DIR/.dotfiles-backup-session"
 
 init_backup_session() {
   local BACKUP_SESSION="backup_$(date +%Y%m%d_%H%M%S)"
@@ -40,7 +45,7 @@ backup_file() {
 
   if [ -z "$BACKUP_DIR" ]; then
     if [ ! -f "$SESSION_FILE" ]; then
-      echo "ERROR: No backup session initialized" >&2
+      echo "ERROR: No backup session initialized. Looking for: $SESSION_FILE" >&2
       return 1
     fi
     source "$SESSION_FILE"
