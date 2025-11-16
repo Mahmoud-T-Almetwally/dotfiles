@@ -2,7 +2,7 @@
 
 set -e
 
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
 
 if [ -f "$DOTFILES_DIR/bin/lib/helpers.sh" ]; then
   source "$DOTFILES_DIR/bin/lib/helpers.sh"
@@ -19,7 +19,6 @@ OLD_PACKAGES=(
   "hyprland-qt-support"
   "hyprland-qtutils"
   "hyprshot"
-  "hyprsunset"
   "matugen-bin"
   "waypaper"
   "python-pywal16"
@@ -45,7 +44,6 @@ NEW_PACKAGES=(
   "hyprtoolkit"
   "hyprutils"
   "hyprwayland-scanner"
-  "sunsetr"
   "tinte"
   "matugen"
   "grim"
@@ -77,7 +75,6 @@ systemctl --user daemon-reload 2>/dev/null || {
 
 [ -d "$HOME/.config/wal" ] && rm -rf "$HOME/.config/wal"
 [ -d "$HOME/.config/waypaper" ] && rm -rf "$HOME/.config/waypaper"
-[ -f "$HOME/.config/hypr/hyprsunset.conf" ] && rm -f "$HOME/.config/hypr/hyprsunset.conf"
 
 log_info "Removing old placeholder themes..."
 [ -d "$DOTFILES_DIR/themes/pywal" ] && rm -rf "$DOTFILES_DIR/themes/pywal" && log_detail "Removed pywal placeholder"
@@ -94,12 +91,12 @@ log_info "Setting up wallpapers symlink..."
 if [ -d "$DOTFILES_DIR/backgrounds" ]; then
   mkdir -p "$HOME/Pictures"
 
-  if [ -L "$HOME/Pictures/dotfiles-wallpapers" ] || [ -d "$HOME/Pictures/dotfiles-wallpapers" ]; then
-    rm -rf "$HOME/Pictures/dotfiles-wallpapers"
+  if [ -L "$HOME/Pictures/Wallpapers" ] || [ -d "$HOME/Pictures/Wallpapers" ]; then
+    rm -rf "$HOME/Pictures/Wallpapers"
   fi
 
-  ln -sf "$DOTFILES_DIR/backgrounds" "$HOME/Pictures/dotfiles-wallpapers"
-  log_detail "Wallpapers symlinked to ~/Pictures/dotfiles-wallpapers"
+  ln -sf "$DOTFILES_DIR/backgrounds" "$HOME/Pictures/Wallpapers"
+  log_detail "Wallpapers symlinked to ~/Pictures/Wallpapers"
 fi
 
 log_info "Reloading Hyprland..."
@@ -109,10 +106,10 @@ mkdir -p "$HOME/.config/tinte"
 [ -f "$HOME/.config/tinte/settings.json" ] && rm -f "$HOME/.config/tinte/settings.json"
 cat >"$HOME/.config/tinte/settings.json" <<EOF
 {
-  "wallpaperFolder": "$HOME/Pictures/dotfiles-wallpapers",
+  "wallpaperFolder": "$HOME/Pictures/Wallpapers",
   "posthookScript": "theme-set",
   "exportThemeLocation": "$HOME/.config/tinte/exported-themes",
-  "applyThemeLocation": "$HOME/.local/share/dotfiles/themes/tinte",
+  "applyThemeLocation": "$HOME/dotfiles/themes/tinte",
   "colorBackend": "imagemagick",
   "wallpaperBackend": "hyprpaper"
 }
