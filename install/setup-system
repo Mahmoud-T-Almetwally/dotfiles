@@ -5,7 +5,9 @@ set -e
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 source "$SCRIPT_DIR/lib/helpers.sh"
 source "$SCRIPT_DIR/lib/backup.sh"
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
+
+# Dynamically set DOTFILES_DIR to the parent of the 'install' directory
+DOTFILES_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
 
 # Configure gnome-keyring PAM
 log_info "Configuring gnome-keyring PAM integration..."
@@ -31,6 +33,7 @@ log_info "Configuring pacman.conf..."
 PACMAN_CONF="/etc/pacman.conf"
 
 [ -f "$PACMAN_CONF" ] && backup_file "$PACMAN_CONF"
+# This now copies from the correct ~/dotfiles location
 sudo cp "$DOTFILES_DIR/default/pacman/pacman.conf" "$PACMAN_CONF"
 log_success "pacman.conf configured"
 
@@ -98,24 +101,43 @@ if [ -z "$CURRENT_GIT_EMAIL" ]; then
   fi
 fi
 
-# ly display manager configuration
-if is_installed "ly"; then
-  log_info "Configuring ly display manager..."
-  sudo mkdir -p /etc/systemd/system/ly.service.d
-  [ -f "/etc/systemd/system/ly.service.d/override.conf" ] && backup_file "/etc/systemd/system/ly.service.d/override.conf"
-  sudo cp "$DOTFILES_DIR/default/ly/override.conf" /etc/systemd/system/ly.service.d/override.conf
-  sudo systemctl daemon-reload
-
-  [ -f "/etc/ly/config.ini" ] && backup_file "/etc/ly/config.ini"
-  sudo rm -f /etc/ly/config.ini
-  sudo cp "$DOTFILES_DIR/default/ly/config.ini" /etc/ly/config.ini
-
-  log_success "ly display manager configured"
+# Configure SDDM display manager instead of Ly
+if is_installed "sddm"; then
+  log_info "Configuring SDDM display manager..."
+  
+  # Enable the SDDM service
+  sudo systemctl enable sddm.service
+  
+  # Copy the theme configuration
+  # IMPORTANT: You must create this file in your repository.
+  SDDM_CONF_DIR="/etc/sddm.conf.d"
+  SDDM_THEME_FILE="theme.conf"
+  
+  sudo mkdir -p "$SDDM_CONF_DIR"
+  if [ -f "$DOTFILES_DIR/default/sddm/$SDDM_THEME_FILE" ]; then
+    [ -f "$SDDM_CONF_DIR/$SDDM_THEME_FILE" ] && backup_file "$SDDM_CONF_DIR/$SDDM_THEME_FILE"
+    sudo cp "$DOTFILES_DIR/default/sddm/$SDDM_THEME_FILE" "$SDDM_CONF_DIR/$SDDM_THEME_FILE"
+    log_success "SDDM theme configured."
+  else
+    log_detail "No SDDM theme file found in your repo, skipping theme setup."
+  fi
 else
-  log_detail "ly not installed, skipping"
+  log_detail "sddm not installed, skipping display manager configuration."
 fi
 
-# Remove wait on network from system startup
+# Enable NetworkManager and iwd services
+log_info "Configuring network services..."
+sudo systemctl enable NetworkManager.service
+sudo systemctl enable iwd.service
+
+# Configure NetworkManager to use iwd as the Wi-Fi backend
+NM_CONF_DIR="/etc/NetworkManager/conf.d"
+WIFI_BACKEND_CONF="wifi_backend.conf"
+sudo mkdir -p "$NM_CONF_DIR"
+echo -e "[device]\nwifi.backend=iwd" | sudo tee "$NM_CONF_DIR/$WIFI_BACKEND_CONF" > /dev/null
+log_success "NetworkManager configured to use iwd."
+
+# Disable wait on network from system startup (optional, speeds up boot)
 log_info "Disabling systemd-networkd-wait-online.service..."
 sudo systemctl disable systemd-networkd-wait-online.service 2>/dev/null || true
 
