@@ -9,7 +9,7 @@ DOTFILES_DIR="$HOME/.local/share/dotfiles"
 # Set initial theme
 log_info "Setting up initial theme (everforest)..."
 mkdir -p "$DOTFILES_DIR/current"
-ln -snf "$DOTFILES_DIR/themes/everforest" "$DOTFILES_DIR/current/theme"
+ln -snf "$DOTFILES_DIR/themes/matte-black" "$DOTFILES_DIR/current/theme"
 ln -snf "$DOTFILES_DIR/current/theme/backgrounds/1-everforest.jpg" "$DOTFILES_DIR/current/background"
 
 mkdir -p "$HOME/.config/nvim/lua/plugins"
