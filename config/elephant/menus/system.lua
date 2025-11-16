@@ -10,6 +10,7 @@ function GetEntries()
 		{
 			Text = "Lock",
 			Icon = "",
+            Shortcut = "k",
 			Actions = {
 				["lock"] = "pidof hyprlock || hyprlock &",
 			},
@@ -17,6 +18,7 @@ function GetEntries()
 		{
 			Text = "Suspend",
 			Icon = "󰤄",
+            Shortcut = "d",
 			Actions = {
 				["suspend"] = "systemctl suspend",
 			},
@@ -24,6 +26,7 @@ function GetEntries()
 		{
 			Text = "Relaunch",
 			Icon = "",
+            Shortcut = "l",
 			Actions = {
 				["relaunch"] = "uwsm stop",
 			},
@@ -31,6 +34,7 @@ function GetEntries()
 		{
 			Text = "Restart",
 			Icon = "󰜉",
+            Shortcut = "r",
 			Actions = {
 				["restart"] = "systemctl reboot",
 			},
@@ -38,6 +42,7 @@ function GetEntries()
 		{
 			Text = "Shutdown",
 			Icon = "󰐥",
+            Shortcut = "s",
 			Actions = {
 				["shutdown"] = "systemctl poweroff",
 			},
