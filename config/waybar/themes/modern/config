@@ -55,6 +55,7 @@
 
     "modules-left": [
         "hyprland/workspaces",
+        "hyprland/language",
         "custom/updates"
     ],
 
