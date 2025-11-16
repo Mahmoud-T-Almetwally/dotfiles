@@ -1,5 +1,5 @@
 #!/bin/bash
-source "$HOME/.local/share/dotfiles/bin/lib/helpers.sh"
+source "$HOME/dotfiles/bin/lib/helpers.sh"
 set -e
 
 clear
