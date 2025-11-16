@@ -5,9 +5,12 @@ set -e
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
 source "$SCRIPT_DIR/lib/helpers.sh"
 source "$SCRIPT_DIR/lib/backup.sh"
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
 
-log_info "Backing up existing config..."
+# Dynamically set DOTFILES_DIR to the parent directory of 'install'
+# This makes it robust and not dependent on a hardcoded path.
+DOTFILES_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
+
+log_info "Backing up existing config files from ~/.config..."
 
 # Collect all targets that will be affected
 TARGETS=()
@@ -18,6 +21,7 @@ for item in "$DOTFILES_DIR/config"/*; do
   fi
 done
 
+# Backup any existing files that would be overwritten
 for target in "${TARGETS[@]}"; do
   if [ -e "$target" ]; then
     backup_file "$target" || {
@@ -27,29 +31,35 @@ for target in "${TARGETS[@]}"; do
   fi
 done
 
+# Remove the old files before copying the new ones
 for target in "${TARGETS[@]}"; do
   remove_path "$target"
 done
 
+# Copy the new configuration files from the dotfiles repo
 cp -r "$DOTFILES_DIR/config/"* "$HOME/.config/"
-log_success "Config copied!"
+log_success "New config files copied to ~/.config/"
 
-echo "@import url(\"file://$HOME/.local/share/dotfiles/current/theme/gtk.css\");" >"$HOME/.config/gtk-3.0/gtk.css"
-echo "@import url(\"file://$HOME/.local/share/dotfiles/current/theme/gtk.css\");" >"$HOME/.config/gtk-4.0/gtk.css"
+# Create GTK theme symlinks pointing to the new dotfiles location
+echo "@import url(\"file://$DOTFILES_DIR/current/theme/gtk.css\");" >"$HOME/.config/gtk-3.0/gtk.css"
+echo "@import url(\"file://$DOTFILES_DIR/current/theme/gtk.css\");" >"$HOME/.config/gtk-4.0/gtk.css"
+log_info "GTK theme links created."
 
+# Create Tinte settings file with updated paths
 mkdir -p "$HOME/.config/tinte"
 [ -f "$HOME/.config/tinte/settings.json" ] && rm -f "$HOME/.config/tinte/settings.json"
 cat > "$HOME/.config/tinte/settings.json" << EOF
 {
-  "wallpaperFolder": "$HOME/Pictures/dotfiles-wallpapers",
+  "wallpaperFolder": "$HOME/Pictures/Wallpapers",
   "posthookScript": "theme-set",
   "exportThemeLocation": "$HOME/.config/tinte/exported-themes",
-  "applyThemeLocation": "$HOME/.local/share/dotfiles/themes/tinte",
+  "applyThemeLocation": "$DOTFILES_DIR/themes/tinte",
   "colorBackend": "imagemagick",
   "wallpaperBackend": "hyprpaper"
 }
 EOF
+log_success "Tinte configuration created."
 
-log_success "Config copied!"
-log_info "Backup saved to: $BACKUP_DIR"
-log_info "Restore instructions: cat $RESTORE_FILE"
+# These lines are already in the main install script, so they are not needed here.
+# log_info "Backup saved to: $BACKUP_DIR"
+# log_info "Restore instructions: cat $RESTORE_FILE"
