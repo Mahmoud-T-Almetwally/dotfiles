@@ -10,6 +10,7 @@ function GetEntries()
         {
             Text = "System theme",
             Icon = "󰸌",
+            Shortcut = "s",
             Actions = {
                 ["change-theme"] = "walker --theme menus -m menus:system-themes",
             },
@@ -17,6 +18,7 @@ function GetEntries()
         {
             Text = "Waybar theme",
             Icon = "󰸌",
+            Shortcut = "w",
             Actions = {
                 ["change-waybar"] = "walker --theme menus -m menus:waybar-themes",
             },
@@ -24,6 +26,7 @@ function GetEntries()
         {
             Text = "Fastfetch theme",
             Icon = "󰸌",
+            Shortcut = "f",
             Actions = {
                 ["change-fastfetch"] = "walker --theme menus -m menus:fastfetch-themes",
             },
@@ -31,6 +34,7 @@ function GetEntries()
         {
             Text = "Starship theme",
             Icon = "󰸌",
+            Shortcut = "p",
             Actions = {
                 ["change-starship"] = "walker --theme menus -m menus:starship-themes",
             },
@@ -38,6 +42,7 @@ function GetEntries()
         {
             Text = "Cursor theme",
             Icon = "󰸌",
+            Shortcut = "c",
             Actions = {
                 ["change-cursor"] = "walker --theme menus -m menus:cursor-themes",
             },
