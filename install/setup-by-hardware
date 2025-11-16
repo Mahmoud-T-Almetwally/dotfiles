@@ -5,7 +5,9 @@ set -e
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source "$SCRIPT_DIR/lib/helpers.sh"
 source "$SCRIPT_DIR/lib/backup.sh"
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
+
+# Dynamically set DOTFILES_DIR to the parent of the 'install' directory
+DOTFILES_DIR=$(cd "$SCRIPT_DIR/.." && pwd)
 HYPRLAND_CONF="$HOME/.config/hypr/hyprland.conf"
 
 log_info "Configuring hardware-specific settings..."
@@ -30,15 +32,17 @@ else
 fi
 
 # Remove any existing env/keybinding lines first
+# This regex is flexible enough to match the old or new path, so it's safe to keep.
 sed -i '/source = .*\/\(nvidia-env\.conf\|env\.conf\)$/d' "$HYPRLAND_CONF"
 sed -i '/source = .*\/\(laptop-keybindings\.conf\|desktop-keybindings\.conf\)$/d' "$HYPRLAND_CONF"
 
-# Insert correct ones for current hardware
-sed -i "/source = .*autostart\\.conf/a source = ~/.local/share/dotfiles/default/hypr/conf/${ENV_CONF}\\nsource = ~/.local/share/dotfiles/default/hypr/conf/${KEYBIND_CONF}" "$HYPRLAND_CONF"
+# Insert correct ones for current hardware, using the new DOTFILES_DIR path
+sed -i "/source = .*autostart\\.conf/a source = $DOTFILES_DIR/default/hypr/conf/${ENV_CONF}\\nsource = $DOTFILES_DIR/default/hypr/conf/${KEYBIND_CONF}" "$HYPRLAND_CONF"
 
 log_success "Hardware-specific configuration applied"
 
 # Auto-configure monitors if Hyprland is running
+# This section does not depend on the dotfiles path, so it remains unchanged.
 if command -v hyprctl &>/dev/null && hyprctl monitors &>/dev/null; then
   log_info "Detecting monitor configuration..."
 
