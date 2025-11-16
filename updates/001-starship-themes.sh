@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
 
 if [ -f "$HOME/.config/starship.toml" ]; then
   rm -f "$HOME/.config/starship.toml"
