@@ -16,6 +16,11 @@
       "*": 5
     }
   },
+  "hyprland/language": {
+  "format": "{}",
+  "format-en": "US",
+  "format-eg": "EG"
+ },
   // Updates Count
   "custom/updates": {
     "format": " {}",
