@@ -1,4 +1,4 @@
-Name = "screenshots"
+SName = "screenshots"
 NamePretty = "Screenshots"
 FixedOrder = true
 HideFromProviderlist = true
@@ -17,7 +17,7 @@ function GetEntries()
 			Text = "Area → File",
 			Icon = "",
 			Actions = {
-				["area_file"] = "grim -g \"$(slurp)\" ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send 'Saved Screenshot'",
+				["area_file"] = "grim -g \"$(slurp)\" ~/Pictures/Screenshots/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png && notify-send 'Saved Screenshot'",
 			},
 		},
 		{
@@ -31,7 +31,7 @@ function GetEntries()
 			Text = "Window → File",
 			Icon = "",
 			Actions = {
-				["window_file"] = "grim -g \"$(hyprctl -j clients | jq -r '.[] | \"\\(.at[0]),\\(.at[1]) \\(.size[0])x\\(.size[1])\"' | slurp -r)\" ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send 'Saved Window'",
+				["window_file"] = "grim -g \"$(hyprctl -j clients | jq -r '.[] | \"\\(.at[0]),\\(.at[1]) \\(.size[0])x\\(.size[1])\"' | slurp -r)\" ~/Pictures/Screenshots/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png && notify-send 'Saved Window'",
 			},
 		},
 		{
@@ -45,7 +45,7 @@ function GetEntries()
 			Text = "Fullscreen → File",
 			Icon = "",
 			Actions = {
-				["fullscreen_file"] = "grim ~/Pictures/$(date +%Y-%m-%d_%H-%M-%S).png && notify-send 'Saved Fullscreen'",
+				["fullscreen_file"] = "grim ~/Pictures/Screenshots/screenshot-$(date +%Y-%m-%d_%H-%M-%S).png && notify-send 'Saved Fullscreen'",
 			},
 		},
 	}
