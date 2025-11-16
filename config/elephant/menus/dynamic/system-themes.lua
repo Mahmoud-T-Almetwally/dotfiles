@@ -7,8 +7,9 @@ Parent = "themes"
 function GetEntries()
 	local entries = {}
 	local home = os.getenv("HOME") or ""
-	local themes_dir = home .. "/.local/share/dotfiles/themes"
-	local current_theme_link = home .. "/.local/share/dotfiles/current/theme"
+	-- Corrected paths for themes and the current theme link
+	local themes_dir = home .. "/dotfiles/themes"
+	local current_theme_link = home .. "/dotfiles/current/theme"
 
 	local current_handle = io.popen("basename $(readlink '" .. current_theme_link .. "' 2>/dev/null) 2>/dev/null")
 	local current_theme = ""
