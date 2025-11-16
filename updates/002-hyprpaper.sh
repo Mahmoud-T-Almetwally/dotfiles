@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTFILES_DIR="$HOME/.local/share/dotfiles"
+DOTFILES_DIR="$HOME/dotfiles"
 HYPRPAPER_CONF="$HOME/.config/hypr/hyprpaper.conf"
 
 if pacman -Qi swaybg &>/dev/null; then
@@ -19,8 +19,8 @@ pkill -x swaybg 2>/dev/null || true
 
 if [ ! -f "$HYPRPAPER_CONF" ]; then
   cat > "$HYPRPAPER_CONF" <<EOC
-preload = ~/.local/share/dotfiles/current/background
-wallpaper = , ~/.local/share/dotfiles/current/background
+preload = ~/dotfiles/current/background
+wallpaper = , ~/dotfiles/current/background
 ipc = true
 EOC
 fi
@@ -36,7 +36,7 @@ for i in {1..10}; do
   sleep 0.2
 done
 
-hyprctl hyprpaper reload ,"$HOME/.local/share/dotfiles/current/background" 2>/dev/null || true
+hyprctl hyprpaper reload ,"$HOME/dotfiles/current/background" 2>/dev/null || true
 
 hyprctl reload 2>/dev/null || true
 
