@@ -10,7 +10,7 @@ DOTFILES_DIR="$HOME/.local/share/dotfiles"
 log_info "Setting up initial theme (everforest)..."
 mkdir -p "$DOTFILES_DIR/current"
 ln -snf "$DOTFILES_DIR/themes/matte-black" "$DOTFILES_DIR/current/theme"
-ln -snf "$DOTFILES_DIR/current/theme/backgrounds/1-everforest.jpg" "$DOTFILES_DIR/current/background"
+ln -snf "$DOTFILES_DIR/current/theme/backgrounds/black-hole.jpg" "$DOTFILES_DIR/current/background"
 
 mkdir -p "$HOME/.config/nvim/lua/plugins"
 mkdir -p "$HOME/.config/btop/themes"
@@ -25,11 +25,11 @@ ln -snf "$DOTFILES_DIR/config/fastfetch/configs/config-default.jsonc" "$HOME/.co
 
 log_info "Setting up wallpapers symlink..."
 mkdir -p "$HOME/Pictures"
-if [ -L "$HOME/Pictures/dotfiles-wallpapers" ] || [ -d "$HOME/Pictures/dotfiles-wallpapers" ]; then
-  mv "$HOME/Pictures/dotfiles-wallpapers" "$HOME/Pictures/dotfiles-wallpapers-backup"
+if [ -L "$HOME/Pictures/Wallpapers" ] || [ -d "$HOME/Pictures/Wallpapers" ]; then
+  mv "$HOME/Pictures/Wallpapers" "$HOME/Pictures/Wallpapers-backup"
 fi
-ln -sf "$DOTFILES_DIR/backgrounds" "$HOME/Pictures/dotfiles-wallpapers"
-log_detail "Wallpapers symlinked to ~/Pictures/dotfiles-wallpapers"
+ln -sf "$DOTFILES_DIR/backgrounds" "$HOME/Pictures/Wallpapers"
+log_detail "Wallpapers symlinked to ~/Pictures/Wallpapers"
 
 gsettings set org.gnome.desktop.interface icon-theme "Yaru-sage"
 gsettings set org.gnome.desktop.interface font-name 'CaskaydiaMono Nerd Font Mono 11'
