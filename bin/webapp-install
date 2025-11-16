@@ -1,5 +1,5 @@
 #!/bin/bash
-source "$HOME/.local/share/dotfiles/bin/lib/helpers.sh"
+source "$HOME/dotfiles/bin/lib/helpers.sh"
 
 if [ "$#" -ne 3 ]; then
   log_header "Web App Installer"
