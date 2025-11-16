@@ -3,7 +3,6 @@ gnome-keyring
 polkit-gnome
 
 # Browser
-helium-browser-bin
 zen-browser-bin
 
 # Development
@@ -73,10 +72,13 @@ bluez-utils
 bluetui
 openssh
 ufw
+iwd
+networkmanager
 
 # File Management
-nautilus
-nautilus-open-any-terminal
+dolphin
+kio-extras
+kde-cli-tools
 rsync
 gvfs-dnssd
 unzip
@@ -85,6 +87,7 @@ unzip
 plocate
 pacman-contrib
 power-profiles-daemon
+sddm
 
 # Fonts, themes & icons
 ttf-cascadia-mono-nerd
