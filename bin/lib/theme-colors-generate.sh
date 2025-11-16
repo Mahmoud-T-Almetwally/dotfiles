@@ -2,7 +2,7 @@
 
 CACHE_DIR="$HOME/.cache/wal"
 COLORS_JSON="$CACHE_DIR/colors.json"
-CONFIG_BASE="$HOME/.local/share/dotfiles"
+CONFIG_BASE="$HOME/dotfiles"
 TEMPLATES_DIR="$CONFIG_BASE/config/wal/templates"
 OUTPUT_DIR="$CONFIG_BASE/themes/pywal"
 
