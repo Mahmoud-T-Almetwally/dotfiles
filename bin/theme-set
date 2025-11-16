@@ -1,9 +1,9 @@
 #!/bin/bash
-source "$HOME/.local/share/dotfiles/bin/lib/helpers.sh"
+source "$HOME/dotfiles/bin/lib/helpers.sh"
 
-THEMES_DIR="$HOME/.local/share/dotfiles/themes"
-CURRENT_THEME_LINK="$HOME/.local/share/dotfiles/current/theme"
-CURRENT_BACKGROUND_LINK="$HOME/.local/share/dotfiles/current/background"
+THEMES_DIR="$HOME/dotfiles/themes"
+CURRENT_THEME_LINK="$HOME/dotfiles/current/theme"
+CURRENT_BACKGROUND_LINK="$HOME/dotfiles/current/background"
 
 set_wallpaper() {
   local wallpaper="$1"
@@ -25,7 +25,7 @@ reload_apps() {
   killall -SIGUSR2 ghostty
   killall xdg-desktop-portal-gtk
 
-  local gnome_icons_theme="$HOME/.local/share/dotfiles/current/theme/icons.theme"
+  local gnome_icons_theme="$HOME/dotfiles/current/theme/icons.theme"
   if [[ -f "$gnome_icons_theme" ]]; then
     gsettings set org.gnome.desktop.interface icon-theme "$(<"$gnome_icons_theme")"
   fi
