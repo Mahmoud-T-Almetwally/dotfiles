@@ -160,7 +160,6 @@ USER_SERVICES=(
   "elephant.service"
   "hypridle.service"
   "mako.service"
-  "sunsetr.service"
   "swayosd.service"
   "walker.service"
   "waybar.service"
