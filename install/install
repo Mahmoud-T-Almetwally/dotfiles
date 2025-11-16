@@ -3,18 +3,22 @@
 set -e
 
 SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+# Define the main dotfiles directory based on the script's location
+DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
 
-# Ensure the dotfiles folder is in the correct location
-EXPECTED_PATH="$HOME/.local/share/dotfiles/install"
+# Ensure the dotfiles folder is in the correct location (~/dotfiles/install)
+EXPECTED_PATH="$HOME/dotfiles/install"
 if [[ "$SCRIPT_DIR" != "$EXPECTED_PATH" ]]; then
   echo "ERROR: This script must be run from $EXPECTED_PATH"
   echo "Current location: $SCRIPT_DIR"
   echo ""
-  echo "Please move the dotfiles folder to ~/.local/share/dotfiles and try again"
+  echo "Please clone the repository to ~/dotfiles and try again"
   exit 1
 fi
 
 # Source helpers
+# NOTE: You may need to edit 'lib/backup.sh' if it contains hardcoded paths
+# to ~/.local/share/dotfiles
 source "$SCRIPT_DIR/lib/helpers.sh"
 source "$SCRIPT_DIR/lib/backup.sh"
 
@@ -142,15 +146,14 @@ log_success "Installed in ${MINUTES}m ${SECONDS}s"
 echo
 
 # Load backup info from session file for display
-source "$HOME/.local/share/dotfiles/.dotfiles-backup-session"
+source "$DOTFILES_DIR/.dotfiles-backup-session"
 log_info "Backup saved to: $BACKUP_DIR"
 log_info "Restore instructions: cat $RESTORE_FILE"
 
 # Clean up session file
-rm -f "$HOME/.local/share/dotfiles/.dotfiles-backup-session"
+rm -f "$DOTFILES_DIR/.dotfiles-backup-session"
 
 # Mark all existing updates as applied for fresh install
-DOTFILES_DIR="$(dirname "$SCRIPT_DIR")"
 if [ -d "$DOTFILES_DIR/updates" ]; then
   find "$DOTFILES_DIR/updates" -name "*.sh" -type f | sort | while read update; do
     echo "$(basename "$update")" >> "$DOTFILES_DIR/.updates-applied"
