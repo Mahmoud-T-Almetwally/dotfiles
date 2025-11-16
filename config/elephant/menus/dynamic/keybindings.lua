@@ -21,8 +21,9 @@ function GetEntries()
 		config_file = config_file:gsub("^~", home)
 	end
 
+	-- If the keybindings file is not found by parsing, fall back to the new correct path
 	if config_file == "" or config_file == nil then
-		config_file = home .. "/.local/share/dotfiles/default/hypr/conf/desktop-keybindings.conf"
+		config_file = home .. "/dotfiles/default/hypr/conf/desktop-keybindings.conf"
 	end
 
 	local test_file = io.open(config_file, "r")
