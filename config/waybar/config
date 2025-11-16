@@ -35,6 +35,7 @@
     },
     // Modules Left
     "modules-left": [
+        "hyprland/language",
         "hyprland/workspaces",
         "custom/filemanager"
     ],
