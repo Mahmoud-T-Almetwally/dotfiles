@@ -125,3 +125,6 @@ xdg-utils
 # Utilities
 jq
 seahorse
+
+# Necessary Packages
+python-gobject
