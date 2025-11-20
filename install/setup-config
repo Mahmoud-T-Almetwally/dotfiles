@@ -36,6 +36,55 @@ for target in "${TARGETS[@]}"; do
   remove_path "$target"
 done
 
+#### Setting up kvantum custom theme
+
+log_info "Linking custom Kvantum theme..."
+# Ensure the base Kvantum config directory exists
+mkdir -p "$HOME/.config/Kvantum"
+
+# Define the source in your dotfiles and the target in the system config
+KVANTUM_THEME_SOURCE="$DOTFILES_DIR/config/Kvantum/KvHypr"
+KVANTUM_THEME_TARGET="$HOME/.config/Kvantum/KvHypr"
+
+# If a theme already exists at the target, back it up and remove it
+if [ -e "$KVANTUM_THEME_TARGET" ]; then
+    backup_file "$KVANTUM_THEME_TARGET"
+    remove_path "$KVANTUM_THEME_TARGET"
+fi
+
+# Create the symbolic link
+ln -s "$KVANTUM_THEME_SOURCE" "$KVANTUM_THEME_TARGET"
+log_success "Kvantum theme 'KvHypr' linked."
+
+log_info "Setting default Kvantum theme..."
+
+# Define the source and target paths for the main Kvantum config
+KVANTUM_CONFIG_SOURCE="$DOTFILES_DIR/config/Kvantum/kvantum.kvconfig"
+KVANTUM_CONFIG_TARGET="$HOME/.config/Kvantum/kvantum.kvconfig"
+
+# Ensure the directory exists
+mkdir -p "$HOME/.config/Kvantum"
+
+# Backup and remove any existing Kvantum master config
+if [ -e "$KVANTUM_CONFIG_TARGET" ]; then
+    backup_file "$KVANTUM_CONFIG_TARGET"
+    remove_path "$KVANTUM_CONFIG_TARGET"
+fi
+
+# Copy the new master config file into place
+cp "$KVANTUM_CONFIG_SOURCE" "$KVANTUM_CONFIG_TARGET"
+log_success "Default Kvantum theme set to 'KvHypr'."
+
+#### setting Icon theme for Qt apps
+
+log_info "Copying Qt theme configuration..."
+
+mkdir -p "$HOME/.config/qt6ct"
+
+if [ -f "$DOTFILES_DIR/config/qt6ct/qt6ct.conf" ]; then
+    cp "$DOTFILES_DIR/config/qt6ct/qt6ct.conf" "$HOME/.config/qt6ct/qt6ct.conf"
+fi
+
 # Copy the new configuration files from the dotfiles repo
 cp -r "$DOTFILES_DIR/config/"* "$HOME/.config/"
 log_success "New config files copied to ~/.config/"
