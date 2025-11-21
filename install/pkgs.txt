@@ -120,6 +120,7 @@ yt-dlp
 
 # Desktop Portals
 xdg-desktop-portal-gtk
+xdg-desktop-portal-kde
 xdg-utils
 
 # Utilities
