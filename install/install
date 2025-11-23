@@ -91,7 +91,7 @@ clear
 log_header "Dotfiles Installation"
 
 START_TIME=$(date +%s)
-TOTAL_STEPS=8
+TOTAL_STEPS=9
 CURRENT_STEP=0
 
 if ! is_installed "paru"; then
@@ -123,6 +123,10 @@ bash "$SCRIPT_DIR/setup-by-hardware"
 CURRENT_STEP=$((CURRENT_STEP + 1))
 log_step "[$CURRENT_STEP/$TOTAL_STEPS] Creating theme symlinks"
 bash "$SCRIPT_DIR/setup-theme"
+
+CURRENT_STEP=$((CURRENT_STEP + 1))
+log_step "[$CURRENT_STEP/$TOTAL_STEPS] Setting up Boot splashes"
+bash "$SCRIPT_DIR/setup-boot-splash"
 
 CURRENT_STEP=$((CURRENT_STEP + 1))
 log_step "[$CURRENT_STEP/$TOTAL_STEPS] Copying applications to ~/.local/share/applications"

@@ -1,0 +1,20 @@
+[Unit]
+Description=Dynamic Video Boot Splash
+# We want this to run after the raw console is set up
+After=systemd-vconsole-setup.service systemd-udev-settle.service
+# We strictly want this to finish BEFORE the login manager starts
+Before=display-manager.service getty@tty1.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/rotate-splash.sh
+# This allows mpv to take over the TTY screen
+StandardInput=tty
+StandardOutput=tty
+TTYPath=/dev/tty1
+# Ensure it doesn't hang the boot forever if mpv crashes
+TimeoutSec=15
+
+[Install]
+WantedBy=sysinit.target

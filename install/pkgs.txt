@@ -117,6 +117,7 @@ imagemagick
 ffmpeg
 handbrake-cli
 yt-dlp
+socat
 
 # Desktop Portals
 xdg-desktop-portal-gtk

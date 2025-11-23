@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Define Dotfiles Root (Go up two levels from install/setup-boot-splash)
+DOTFILES_DIR="$(cd "$(dirname "$0")/../.." && pwd)"
+
+# ANSI Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}:: Setting up Dynamic Boot Splash...${NC}"
+
+# 1. Install Dependencies (mpv for video, socat is often needed for mpv ipc)
+if ! pacman -Qi mpv &> /dev/null; then
+    echo -e "${YELLOW}:: Installing mpv...${NC}"
+    sudo pacman -S --noconfirm --needed mpv socat
+fi
+
+# 2. Create State Directory
+echo -e "${BLUE}:: Creating state directory at /var/lib/boot-splash${NC}"
+sudo mkdir -p /var/lib/boot-splash
+# Ensure standard permissions so the service can write to it
+sudo chmod 755 /var/lib/boot-splash
+
+# 3. Link Video Directory
+# Linking ~/dotfiles/boot-splash-screens -> /usr/local/share/boot-splashes
+echo -e "${BLUE}:: Linking video directory...${NC}"
+sudo mkdir -p /usr/local/share
+
+# Remove existing link or directory if it exists to avoid errors/nesting
+if [ -d "/usr/local/share/boot-splashes" ] || [ -L "/usr/local/share/boot-splashes" ]; then
+    sudo rm -rf "/usr/local/share/boot-splashes"
+fi
+
+# Create the symlink
+sudo ln -s "$DOTFILES_DIR/boot-splash-screens" "/usr/local/share/boot-splashes"
+echo -e "${GREEN}:: Linked $DOTFILES_DIR/boot-splash-screens -> /usr/local/share/boot-splashes${NC}"
+
+# 4. Install and Configure Rotation Script
+echo -e "${BLUE}:: Installing rotation script...${NC}"
+sudo cp "$DOTFILES_DIR/bin/rotate-splash" /usr/local/bin/rotate-splash
+sudo chmod +x /usr/local/bin/rotate-splash
+
+# AUTO-FIX: Ensure the script points to the correct directory (without /videos)
+# We update the VIDEO_DIR variable inside the installed script just in case
+sudo sed -i 's|VIDEO_DIR="/usr/local/share/boot-splashes/videos"|VIDEO_DIR="/usr/local/share/boot-splashes"|g' /usr/local/bin/rotate-splash
+
+# 5. Install Systemd Service
+echo -e "${BLUE}:: Installing Systemd service...${NC}"
+sudo cp "$DOTFILES_DIR/default/systemd/system/dynamic-splash.service" /etc/systemd/system/dynamic-splash.service
+
+# 6. Enable the Service
+echo -e "${BLUE}:: Enabling dynamic-splash service...${NC}"
+sudo systemctl daemon-reload
+sudo systemctl enable dynamic-splash.service
+
+echo -e "${GREEN}:: Boot splash setup complete!${NC}"
+echo -e "${YELLOW}:: NOTE: To hide text during boot, add 'quiet splash vt.global_cursor_default=0' to GRUB_CMDLINE_LINUX_DEFAULT in /etc/default/grub and run sudo grub-mkconfig -o /boot/grub/grub.cfg${NC}"

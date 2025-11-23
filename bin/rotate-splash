@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Configuration
+VIDEO_DIR="/usr/local/share/boot-splashes"
+STATE_FILE="/var/lib/boot-splash/index"
+DURATION="6" # Seconds to play
+
+# 1. Initialize or Read Index
+if [ ! -f "$STATE_FILE" ]; then
+    echo "1" > "$STATE_FILE"
+    CURRENT_INDEX=1
+else
+    CURRENT_INDEX=$(cat "$STATE_FILE")
+fi
+
+# 2. check if the file exists, if not, reset to 1 (Loop logic)
+VIDEO_FILE="$VIDEO_DIR/splash-${CURRENT_INDEX}.mp4"
+
+if [ ! -f "$VIDEO_FILE" ]; then
+    # If video 5 doesn't exist, reset to 1 and define file
+    CURRENT_INDEX=1
+    VIDEO_FILE="$VIDEO_DIR/splash-${CURRENT_INDEX}.mp4"
+fi
+
+# 3. Play the video
+# We use --vo=gpu --gpu-context=drm to play without X11/Wayland
+# --fs = fullscreen, --no-terminal = hide text output
+if [ -f "$VIDEO_FILE" ]; then
+    mpv --vo=gpu \
+        --gpu-context=drm \
+        --fs \
+        --no-terminal \
+        --length="$DURATION" \
+        "$VIDEO_FILE" > /dev/null 2>&1
+fi
+
+# 4. Increment index for NEXT boot and save
+NEXT_INDEX=$((CURRENT_INDEX + 1))
+echo "$NEXT_INDEX" > "$STATE_FILE"
