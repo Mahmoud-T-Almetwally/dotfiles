@@ -3,7 +3,7 @@
 # Configuration
 VIDEO_DIR="/usr/local/share/boot-splashes"
 STATE_FILE="/var/lib/boot-splash/index"
-DURATION="6" # Seconds to play
+DURATION="3" # Seconds to play
 
 # 1. Initialize or Read Index
 if [ ! -f "$STATE_FILE" ]; then
